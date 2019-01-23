@@ -3,7 +3,7 @@
 ## Introduction
 This package extends laravel facades: 
 
-- Use a single array as instead of listing parameters
+- Use a single array instead of listing parameters
 - Use parameters in any order
 - Auto resolve class/interface type hints on any method (using laravel's application container) 
 
