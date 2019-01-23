@@ -1,0 +1,35 @@
+{
+    "name": "laramate/facade-mapper",
+    "description": "Extends laravel facades to use arrays as arguments for any method",
+    "license": "MIT",
+    "type": "package",
+    "authors": [
+        {
+            "name": "Tobi Kivelip",
+            "email": "tkivelip@gmail.com",
+            "homepage": "https://www.laramate.de/",
+            "role": "Developer"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": "^7.1.3",
+        "illuminate/support": "5.6.*|5.7.*|5.8.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.5",
+        "symfony/var-dumper": "^4.2",
+        "orchestra/testbench": "v3.7.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Laramate\\FacadeMapper\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Laramate\\FacadeMapper\\Tests\\": "tests/"
+        }
+    }
+}
