@@ -24,18 +24,68 @@ trait HasFacadeMapper
      */
     public static function mappedCall(string $method, array $arguments = [])
     {
-        $class = static::getFacadeRoot();
+        $className = static::getAccessorClassName();
 
         try {
-            $reflection = new ReflectionClass($class);
-            $parameters = $reflection->getMethod($method)->getParameters();
+            $reflection = new ReflectionClass($className);
         } catch (\Throwable $error) {
             throw new \Exception('Unable to reflect parameters', 0, $error);
         }
 
-        return $class->$method(
-            ...static::composeParameters($parameters, $arguments)
-        );
+        if ('make' == $method && ! $reflection->hasMethod('make')) {
+            return static::mappedConstructorCall($className, $arguments, $reflection);
+        } else {
+            return static::mappedMethodCall($className, $method, $arguments, $reflection);
+        }
+    }
+
+    /**
+     * @param string          $className
+     * @param array           $arguments
+     * @param ReflectionClass $reflection
+     *
+     * @throws InvalidParameterException
+     * @throws ReflectionException
+     *
+     * @return object
+     */
+    protected static function mappedConstructorCall(string $className, array $arguments, ReflectionClass $reflection): object
+    {
+        $parameters = $reflection->getConstructor()->getParameters();
+
+        return new $className(...static::composeParameters($parameters, $arguments));
+    }
+
+    /**
+     * @param string          $className
+     * @param string          $method
+     * @param array           $arguments
+     * @param ReflectionClass $reflection
+     *
+     * @throws InvalidParameterException
+     * @throws ReflectionException
+     *
+     * @return object
+     */
+    protected static function mappedMethodCall(string $className, string $method, array $arguments, ReflectionClass $reflection): object
+    {
+        $parameters = $reflection->getMethod($method)->getParameters();
+
+        return Container::getInstance()
+            ->make($className)
+            ->$method(...static::composeParameters($parameters, $arguments));
+    }
+
+    /**
+     * Get the accessor class name.
+     *
+     * @return string
+     */
+    protected static function getAccessorClassName(): string
+    {
+        $accessor = static::getFacadeAccessor();
+
+        return is_object($accessor) ? get_class($accessor) : $accessor;
     }
 
     /**

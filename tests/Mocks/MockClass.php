@@ -6,16 +6,7 @@ class MockClass
 {
     protected $attributes = [];
 
-    public function make(string $param1, $secondParam, string $third_param = 'default')
-    {
-        $this->attributes['param1'] = $param1;
-        $this->attributes['secondParam'] = $secondParam;
-        $this->attributes['third_param'] = $third_param;
-
-        return $this;
-    }
-
-    public function makeResolve(MockClass $param1, $secondParam, string $third_param = 'default')
+    public function __construct(string $param1, $secondParam, string $third_param = 'default')
     {
         $this->attributes['param1'] = $param1;
         $this->attributes['secondParam'] = $secondParam;
