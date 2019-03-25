@@ -51,7 +51,8 @@ trait HasMappedCalls
      */
     protected static function mappedConstructorCall(string $className, array $arguments, ReflectionClass $reflection): object
     {
-        $parameters = $reflection->getConstructor()->getParameters();
+        $constructor = $reflection->getConstructor();
+        $parameters = $constructor ? $constructor->getParameters() : [];
 
         return new $className(...static::composeParameters($parameters, $arguments));
     }
